@@ -1,0 +1,78 @@
+<style>
+        /* Custom styles to achieve the dark, CFP-correlated look */
+        body {
+            background-color: #1a1a1a; /* Dark background */
+            color: #ffffff; /* Default text color is white */
+        }
+        /* ... all other custom CSS ... */
+    </style>
+    ```
+
+
+
+ */
+
+/* --- Page and Text Defaults --- */
+body {
+    background-color: #1a1a1a; /* Dark background for CFP aesthetic */
+    color: #ffffff; /* Default text color is white */
+}
+
+/* --- Masthead/Header Styling --- */
+.masthead {
+    /* ** NOTE: You must replace the URL below with a working, stable link! ** */
+    background-image: url('assets/img/BYUfootball.jpg')"
+    background-size: cover;
+    background-position: center;
+    height: 400px; /* Adjust height as needed */
+}
+
+.site-heading h1, .site-heading .subheading {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for readability */
+}
+
+/* --- Resume Comparison Cards --- */
+.comparison-card {
+    background-color: #0d0d0d; /* Slightly darker card background */
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%; 
+}
+.card-header {
+    color: #f7931e; /* CFP-style orange/gold for contrast */
+}
+
+/* --- Accordion/Dropdown Styling (for Tableau) --- */
+.accordion-button {
+    background-color: #333;
+    color: #ffffff;
+    border-color: #000000;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #444;
+    color: #ffffff;
+}
+.accordion-body {
+    background-color: #1a1a1a;
+}
+
+/* --- Tableau and Media Container Styling --- */
+.tableau-container {
+    border: 2px solid #f7931e;
+    padding: 15px;
+    background-color: #0d0d0d;
+}
+.iframe-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* --- Footer Border Adjustment --- */
+footer.border-top {
+    border-color: #333 !important; /* Ensures the footer line is visible against the dark background */
+}
+.footer .small {
+    color: #999 !important;
+}

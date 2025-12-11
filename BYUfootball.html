@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BYU Football Player Guessing Game</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #1a4185; /* BYU Blue */
+            color: white;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: #002255; /* Darker BYU Blue/Navy */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #f5f5f5; /* Light Gray/White */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #000;
+        }
+        .profile-box {
+            background-color: #ffffff;
+            color: #002255;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 3px solid #f7931e; /* BYU Gold/Orange Accent */
+        }
+        .profile-box p {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .game-output {
+            min-height: 80px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <!-- <a class="navbar-brand" href="index.html">HOME</a> -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <!-- <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li> -->
+                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="CFP.html">CFP</a></li>
+<div class="container text-center">
+    <h1>BYU Football Guessing Game</h1>
+
+    <div class="profile-box text-start">
+        <h3>Player Profile:</h3>
+        <p>Position: <span id="pos"></span></p>
+        <p>Height: <span id="height"></span></p>
+        <p>Weight: <span id="weight"></span></p>
+        <p>Number: <span id="number"></span></p>
+    </div>
+
+    <div class="mb-3 text-start">
+        <label for="guessInput" class="form-label">Your Guess (Player Full Name):</label>
+        <input type="text" class="form-control" id="guessInput" placeholder="Enter full name">
+    </div>
+
+    <button id="guessButton" class="btn btn-warning w-100 mb-3">Submit Guess</button>
+    <button id="playAgainButton" class="btn btn-success w-100" style="display: none;">Play Again?</button>
+
+    <div class="game-output mt-4">
+        <p id="message" class="text-warning fs-5">Guess the player!</p>
+        <p id="guessesLeft" class="text-light">Guesses Remaining: 5</p>
+        <p id="hint" class="text-info"></p>
+        <p id="answer" class="text-danger"></p>
+    </div>
+</div>
+
+<script>
+    // 1. DATA: Expanded list of notable BYU players (Post 1984)
+    const players = [
+        { name: "Ty Detmer", pos: "QB", height: "6'0\"", weight: "175 lbs", number: "14", hint: "Won the **Heisman Trophy** in 1990." },
+        { name: "Zach Wilson", pos: "QB", height: "6'2\"", weight: "210 lbs", number: "1", hint: "Drafted #2 overall in the **2021 NFL Draft**." },
+        { name: "Robbie Bosco", pos: "QB", height: "6'2\"", weight: "215 lbs", number: "6", hint: "Led BYU to the **1984 National Championship**." },
+        { name: "Max Hall", pos: "QB", height: "6'1\"", weight: "210 lbs", number: "15", hint: "Holds the school record for **career passing TDs** (94) post-McMahon era." },
+        { name: "Taysom Hill", pos: "QB", height: "6'2\"", weight: "230 lbs", number: "7", hint: "Set the BYU record for career rushing yards by a QB." },
+        { name: "John Beck", pos: "QB", height: "6'2\"", weight: "225 lbs", number: "10", hint: "Known for his comeback win against Utah in **2006**." },
+        { name: "Steve Sarkisian", pos: "QB", height: "6'2\"", weight: "215 lbs", number: "11", hint: "Led BYU to a **14-1 record** in 1996 and won the Sammy Baugh Trophy." },
+        { name: "Jamaal Williams", pos: "RB", height: "6'0\"", weight: "220 lbs", number: "21", hint: "BYU's **All-Time Career Rushing Leader** with 3,901 yards." },
+        { name: "Tyler Allgeier", pos: "RB", height: "5'11\"", weight: "224 lbs", number: "25", hint: "Set the BYU **single-season rushing record** in 2021 (1,601 yards)." },
+        { name: "Luke Staley", pos: "RB", height: "6'1\"", weight: "230 lbs", number: "25", hint: "Won the **Doak Walker Award** in 2001." },
+        { name: "Puka Nacua", pos: "WR", height: "6'2\"", weight: "201 lbs", number: "12", hint: "Holds several NFL rookie receiving records (**2023**)." },
+        { name: "Cody Hoffman", pos: "WR", height: "6'4\"", weight: "220 lbs", number: "2", hint: "BYU's **All-Time Career Leader in Receiving Yards** (3,612)." },
+        { name: "Austin Collie", pos: "WR", height: "6'1\"", weight: "200 lbs", number: "9", hint: "Holds the BYU single-season record for **receiving yards** (1,538 in 2008)." },
+        { name: "Dennis Pitta", pos: "TE", height: "6'4\"", weight: "245 lbs", number: "32", hint: "Holds the BYU career receiving yards record for a tight end." },
+        { name: "Kyle Van Noy", pos: "LB", height: "6'3\"", weight: "250 lbs", number: "3", hint: "Famous for his **Poinsettia Bowl performance** (2012) with a sack, INT, and forced fumble." },
+        { name: "Fred Warner", pos: "LB", height: "6'3\"", weight: "236 lbs", number: "4", hint: "A three-time **Pro Bowler** and All-Pro NFL linebacker." },
+        { name: "Ezekiel Ansah", pos: "DE", height: "6'5\"", weight: "275 lbs", number: "47", hint: "Drafted #5 overall in 2013 despite **minimal football experience**." }
+    ];
+
+    let targetPlayer;
+    let guesses = 0;
+    const maxGuesses = 5;
+
+    // Element access utility
+    const $ = id => document.getElementById(id); 
+
+    // Accessing elements outside of the functions for efficiency
+    const guessButton = $('guessButton');
+    const playAgainButton = $('playAgainButton');
+    const guessInput = $('guessInput');
+    const message = $('message');
+    const guessesLeft = $('guessesLeft');
+    const hint = $('hint');
+    const answer = $('answer');
+
+    // 6. Function to start/reset the game
+    function startGame() {
+        // Reset state
+        guesses = 0;
+        guessInput.value = "";
+        guessInput.disabled = false;
+        guessButton.style.display = 'block';
+        playAgainButton.style.display = 'none';
+        message.textContent = "Guess the player!";
+        message.className = 'text-warning fs-5';
+        answer.textContent = "";
+        hint.textContent = "";
+
+        // 1. Randomly pull a player
+        const randomIndex = Math.floor(Math.random() * players.length);
+        targetPlayer = players[randomIndex];
+
+        // 2. Present the mini profile
+        $('pos').textContent = targetPlayer.pos;
+        $('height').textContent = targetPlayer.height;
+        $('weight').textContent = targetPlayer.weight;
+        $('number').textContent = targetPlayer.number;
+        
+        // Update guess count
+        guessesLeft.textContent = `Guesses Remaining: ${maxGuesses}`;
+        
+        console.log("Target Player (for testing):", targetPlayer.name);
+    }
+
+    // 4. Function to end the game
+    function endGame(isCorrect) {
+        guessInput.disabled = true;
+        guessButton.style.display = 'none';
+        playAgainButton.style.display = 'block'; // 5. Play again prompt
+        
+        if (isCorrect) {
+            message.textContent = "Correct! You guessed it!";
+            message.className = 'text-success fs-5';
+        } else {
+            message.textContent = "Game over. The player was:";
+            message.className = 'text-danger fs-5';
+            answer.textContent = targetPlayer.name;
+        }
+    }
+
+    // 4. & 7. Function to handle a guess
+    function handleGuess() {
+        if (guesses >= maxGuesses) return;
+
+        // Clean user input for comparison (removes extra spaces, non-alpha chars for loose matching)
+        const userGuess = guessInput.value.trim().toLowerCase().replace(/[^a-z\s]/g, '');
+        const correctName = targetPlayer.name.toLowerCase().replace(/[^a-z\s]/g, '');
+
+        guesses++; // Increment guess count
+
+        if (userGuess === correctName) {
+            endGame(true); // Correct!
+        } else {
+            if (guesses >= maxGuesses) {
+                endGame(false); // Game over.
+            } else {
+                // Incorrect, prompt "Guess again..."
+                message.textContent = "Guess again...";
+                message.className = 'text-warning fs-5';
+                
+                // 7. Provide Hint
+                if (guesses === 1) {
+                    hint.innerHTML = `Hint 1: Fun Fact: ${targetPlayer.hint}`;
+                } else if (guesses === 2) {
+                    hint.textContent = `Hint 2: The player wore number ${targetPlayer.number}.`;
+                } else if (guesses === 3) {
+                    hint.textContent = `Hint 3: The player's first name starts with '${targetPlayer.name[0].toUpperCase()}'.`;
+                } else if (guesses === 4) {
+                    // Split the name and show the first letter of the last name
+                    const nameParts = targetPlayer.name.split(' ');
+                    const lastName = nameParts[nameParts.length - 1];
+                    hint.textContent = `Hint 4: The player's last name starts with '${lastName[0].toUpperCase()}'.`;
+                }
+                
+                guessInput.value = ""; // Clear input after guess
+            }
+        }
+        
+        // 3. Update guesses count
+        const guessesRemaining = maxGuesses - guesses;
+        guessesLeft.textContent = `Guesses Remaining: ${guessesRemaining}`;
+    }
+
+    // Event Listeners - ENSURING THESE ARE ATTACHED
+    // We attach the listener directly to the global constants defined above
+    guessButton.addEventListener('click', handleGuess);
+    playAgainButton.addEventListener('click', startGame);
+
+    // Initial game start when the page loads
+    startGame();
+
+</script>

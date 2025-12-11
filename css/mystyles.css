@@ -1,9 +1,13 @@
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    background-color: antiquewhite;
+    background-color: ghostwhite;
 }
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Comic Sans MS', cursive, sans-serif
+}
+p{
+    margin-top: 5;
+    padding: 0%;
 }
 a {
     font-family: 'Comic Sans MS', cursive, sans-serif
